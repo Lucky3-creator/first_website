@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>For You ❤️</title>
+
+    <style>
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            font-family: Arial, sans-serif;
+
+            background: linear-gradient(
+                135deg,
+                #ff758c,
+                #ff7eb3
+            );
+
+            overflow: hidden;
+        }
+
+        .container {
+            width: 90%;
+            max-width: 520px;
+
+            background: rgba(255,255,255,0.97);
+
+            padding: 40px 25px;
+
+            border-radius: 25px;
+
+            text-align: center;
+
+            box-shadow:
+                0 15px 40px rgba(0,0,0,0.20);
+
+            position: relative;
+
+            z-index: 2;
+
+            animation: fadeIn 0.6s ease;
+        }
+
+        .page {
+            display: none;
+        }
+
+        .active {
+            display: block;
+        }
+
+        .heart {
+            font-size: 70px;
+
+            animation: heartbeat 1.2s infinite;
+        }
+
+        h1 {
+            margin-top: 15px;
+
+            color: #ff174f;
+
+            font-size: 32px;
+        }
+
+        h2 {
+            color: #ff174f;
+
+            font-size: 36px;
+        }
+
+        p {
+            margin-top: 15px;
+
+            color: #555;
+
+            font-size: 17px;
+
+            line-height: 1.6;
+        }
+
+        .highlight {
+            color: #ff174f;
+
+            font-size: 21px;
+
+            font-weight: bold;
+        }
+
+        .small {
+            color: #999;
+
+            font-size: 14px;
+
+            margin-top: 20px;
+        }
+
+        .buttons {
+            margin-top: 30px;
+
+            display: flex;
+
+            justify-content: center;
+
+            align-items: center;
+
+            gap: 18px;
+
+            min-height: 60px;
+        }
+
+        button {
+            border: none;
+
+            padding: 14px 25px;
+
+            border-radius: 30px;
+
+            font-size: 16px;
+
+            font-weight: bold;
+
+            cursor: pointer;
+
+            transition: 0.2s;
+        }
+
+        .nextBtn {
+            background: #ff3b6b;
+
+            color: white;
+        }
+
+        .nextBtn:hover {
+            transform: scale(1.08);
+
+            background: #ff174f;
+        }
+
+        #yesBtn {
+            background: #ff3b6b;
+
+            color: white;
+        }
+
+        #yesBtn:hover {
+            transform: scale(1.08);
+        }
+
+        #noBtn {
+            background: #eeeeee;
+
+            color: #555;
+        }
+
+
+        /* =========================
+           PASSWORD PAGE
+        ========================== */
+
+        .password-input {
+            width: 80%;
+            padding: 14px 18px;
+            margin-top: 25px;
+            border: 2px solid #ffd0da;
+            border-radius: 30px;
+            outline: none;
+            text-align: center;
+            font-size: 17px;
+        }
+
+        .password-input:focus {
+            border-color: #ff3b6b;
+        }
+
+        #passwordError {
+            display: none;
+            color: #ff174f;
+            font-size: 14px;
+            margin-top: 15px;
+            font-weight: bold;
+        }
+
+        .floating-heart {
+            position: fixed;
+
+            bottom: -50px;
+
+            font-size: 25px;
+
+            pointer-events: none;
+
+            z-index: 10;
+
+            animation: floatUp 4s linear forwards;
+        }
+
+        @keyframes heartbeat {
+
+            0%, 100% {
+                transform: scale(1);
+            }
+
+            50% {
+                transform: scale(1.15);
+            }
+
+        }
+
+        @keyframes fadeIn {
+
+            from {
+                opacity: 0;
+
+                transform: translateY(20px);
+            }
+
+            to {
+                opacity: 1;
+
+                transform: translateY(0);
+            }
+
+        }
+
+        @keyframes floatUp {
+
+            0% {
+                transform: translateY(0) rotate(0deg);
+
+                opacity: 1;
+            }
+
+            100% {
+                transform: translateY(-110vh) rotate(360deg);
+
+                opacity: 0;
+            }
+
+        }
+
+        @media(max-width:500px) {
+
+            .container {
+                padding: 35px 20px;
+            }
+
+            .heart {
+                font-size: 60px;
+            }
+
+            h1 {
+                font-size: 27px;
+            }
+
+            h2 {
+                font-size: 32px;
+            }
+
+            p {
+                font-size: 16px;
+            }
+
+            button {
+                padding: 12px 20px;
+
+                font-size: 14px;
+            }
+
+            .password-input {
+                width: 90%;
+            }
+
+        }
+
+    </style>
+
+</head>
+
+
+<body>
+
+
+
+    <!-- =========================
+         PASSWORD PAGE
+    ========================== -->
+
+    <div class="container page active" id="loginPage">
+
+        <div class="heart">
+            🔐❤️
+        </div>
+
+        <h1>
+            Wait... 👀
+        </h1>
+
+        <p>
+            Pehle password batao 😏
+        </p>
+
+        <p class="small">
+            Bina password ke entry allowed nahi hai 😂
+        </p>
+
+        <input
+            type="password"
+            id="passwordInput"
+            class="password-input"
+            placeholder="Enter Password">
+
+        <div class="buttons">
+
+            <button
+                class="nextBtn"
+                onclick="checkPassword()">
+
+                Enter ❤️
+
+            </button>
+
+        </div>
+
+        <p id="passwordError">
+            Wrong Password 😜
+            <br>
+            Try Again!
+        </p>
+
+    </div>
+
+
+    <!-- ================= PAGE 1 ================= -->
+
+    <div class="container page" id="page1">
+
+        <div class="heart">
+            👀❤️
+        </div>
+
+        <h1>
+            sunn to ! 👀
+        </h1>
+
+        <p>
+            tor br kuchu banaye ho... aur resabe jhan👍
+        </p>
+
+        <p>
+            Au haan...
+            <br>
+            tore br <b>banaye ho</b> 😂
+        </p>
+
+        <p class="small">
+            darbe jhann... Ranu 😊
+        </p>
+
+        <div class="buttons">
+
+            <button
+                class="nextBtn"
+                onclick="nextPage(2)">
+
+                Let's See 😏
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= PAGE 2 ================= -->
+
+    <div class="container page" id="page2">
+
+        <div class="heart">
+            😶‍🌫️❤️
+        </div>
+
+        <h1>
+            dekh bhyiii...tolaa btaat ho 👀
+        </h1>
+
+        <p>
+            koi laa jhan btabe 😂
+        </p>
+
+        <p>
+            Bas honestly padhbe...
+            <br>
+            au haan, hasbe mat 😭😂
+        </p>
+
+        <p>
+            Ye baat la 
+            <br>
+            <b>bhut time se</b>
+            <br>
+           bolna rhis...😊
+           mola alkarha dar lgt hee..te marbe jhann🤞
+        </p>
+
+        <div class="buttons">
+
+            <button
+                class="nextBtn"
+                onclick="nextPage(3)">
+
+                Bolo na..bol hi det ho
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= PAGE 3 ================= -->
+
+    <div class="container page" id="page3">
+
+        <div class="heart">
+            ❤️
+        </div>
+
+        <h1>
+           thik... ta btat ho 😶‍🌫️
+        </h1>
+
+        <p>
+            mola maya hoge he tor se..❤️
+        </p>
+
+        <p>
+
+            Actually...
+
+            <br>
+
+            <span class="highlight">
+               bhut time phli lee
+            </span>
+
+        </p>
+
+        <p>
+
+            <b>
+                1st Sem se hi 😂🥲
+            </b>
+
+        </p>
+
+        <p>
+
+            bs tab btaye ke himaat nii rihis hee...
+
+            <br>
+
+           aau abhi bhhut kam he..
+           <br>
+            au te to bolbe nhii ta mehe bolat ho..😁
+
+        </p>
+
+        <p>
+
+            Agar tum chaho to...
+
+            <br>
+
+            <span class="highlight">
+                ye try kar sakte hain. 👀❤️
+            </span>
+
+        </p>
+
+        <p class="small">
+
+            Koi pressure nahi he 😌
+
+            <br>
+
+            Jo feel kart hs honestly batabe ❤️
+            <br>
+            bs...Na mt bolbe wrna roast marhu 😂
+
+        </p>
+
+
+        <div class="buttons">
+
+            <button id="yesBtn">
+
+                Ha 😏❤️
+
+            </button>
+
+
+            <button id="noBtn">
+
+                Na 😥
+
+            </button>
+
+        </div>
+
+    </div>
+
+
+
+    <!-- ================= PAGE 4 ================= -->
+
+    <div class="container page" id="page4">
+
+        <div class="heart">
+            💖
+        </div>
+
+        <h2>
+            Hehe... 😭❤️
+        </h2>
+
+        <p>
+            Itne time se bolna tha...
+        </p>
+
+        <p>
+            Finally bol hi diya! 😂🥰
+        </p>
+
+        <p>
+
+            <span class="highlight">
+                To phir... try krbo @falani_05❤️
+            </span>
+
+        </p>
+
+        <div style="font-size:50px; margin-top:20px;">
+
+            🥰 💕 💖 💕 🥰
+
+        </div>
+
+        <p class="small">
+
+            Bas itna hi kehna tha...
+
+            <br>
+
+            Baaki te to samajhdaar hs 😏😂
+
+        </p>
+
+    </div>
+
+
+
+    <script>
+
+
+
+        /* ===============================
+           PASSWORD
+        =============================== */
+
+        function checkPassword() {
+
+            // CHANGE YOUR PASSWORD HERE
+            const correctPassword = "05032005";
+
+            const enteredPassword =
+                document.getElementById("passwordInput").value;
+
+            const errorMessage =
+                document.getElementById("passwordError");
+
+            if (enteredPassword === correctPassword) {
+
+                document
+                    .getElementById("loginPage")
+                    .classList.remove("active");
+
+                document
+                    .getElementById("page1")
+                    .classList.add("active");
+
+                errorMessage.style.display = "none";
+
+            } else {
+
+                errorMessage.style.display = "block";
+
+                document
+                    .getElementById("passwordInput")
+                    .value = "";
+            }
+        }
+
+
+        // Press Enter to login
+        document
+            .getElementById("passwordInput")
+            .addEventListener("keypress", function(event) {
+
+                if (event.key === "Enter") {
+                    checkPassword();
+                }
+
+            });
+
+
+        /* ===============================
+           PAGE CHANGE FUNCTION
+        =============================== */
+
+        function nextPage(pageNumber) {
+
+            document
+                .querySelectorAll(".page")
+                .forEach(function(page) {
+
+                    page.classList.remove("active");
+
+                });
+
+
+            const nextPageElement =
+                document.getElementById(
+                    "page" + pageNumber
+                );
+
+
+            nextPageElement.classList.add("active");
+
+        }
+
+
+
+        /* ===============================
+           YES BUTTON
+        =============================== */
+
+        const yesBtn =
+            document.getElementById("yesBtn");
+
+
+        yesBtn.addEventListener(
+            "click",
+            function() {
+
+                // Page 4 open
+
+                nextPage(4);
+
+
+                // Hearts create
+
+                for(let i = 0; i < 35; i++) {
+
+                    setTimeout(
+                        function() {
+
+                            createHeart();
+
+                        },
+                        i * 80
+                    );
+
+                }
+
+            }
+        );
+
+
+
+        /* ===============================
+           NO BUTTON
+        =============================== */
+
+        const noBtn =
+            document.getElementById("noBtn");
+
+
+        function moveNoButton() {
+
+            const maxX =
+                window.innerWidth -
+                noBtn.offsetWidth -
+                20;
+
+
+            const maxY =
+                window.innerHeight -
+                noBtn.offsetHeight -
+                20;
+
+
+            const randomX =
+                Math.max(
+                    10,
+                    Math.random() * maxX
+                );
+
+
+            const randomY =
+                Math.max(
+                    10,
+                    Math.random() * maxY
+                );
+
+
+            noBtn.style.position = "fixed";
+
+
+            noBtn.style.left =
+                randomX + "px";
+
+
+            noBtn.style.top =
+                randomY + "px";
+
+        }
+
+
+
+        /* Desktop */
+
+        noBtn.addEventListener(
+            "mouseenter",
+            function() {
+
+                moveNoButton();
+
+            }
+        );
+
+
+
+        /* Mobile */
+
+        noBtn.addEventListener(
+            "touchstart",
+            function(event) {
+
+                event.preventDefault();
+
+                moveNoButton();
+
+            }
+        );
+
+
+
+        /* Click */
+
+        noBtn.addEventListener(
+            "click",
+            function() {
+
+                moveNoButton();
+
+            }
+        );
+
+
+
+        /* ===============================
+           FLOATING HEARTS
+        =============================== */
+
+        function createHeart() {
+
+            const heart =
+                document.createElement("div");
+
+
+            heart.classList.add(
+                "floating-heart"
+            );
+
+
+            const hearts = [
+
+                "❤️",
+                "💖",
+                "💕",
+                "💗",
+                "💓",
+                "🥰",
+                "💘"
+
+            ];
+
+
+            heart.innerHTML =
+                hearts[
+                    Math.floor(
+                        Math.random() *
+                        hearts.length
+                    )
+                ];
+
+
+            heart.style.left =
+                Math.random() * 100 + "vw";
+
+
+            heart.style.animationDuration =
+                (3 + Math.random() * 3) + "s";
+
+
+            document.body.appendChild(
+                heart
+            );
+
+
+            setTimeout(
+                function() {
+
+                    heart.remove();
+
+                },
+                6000
+            );
+
+        }
+
+    </script>
+
+</body>
+
+</html>
